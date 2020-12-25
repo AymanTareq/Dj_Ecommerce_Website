@@ -92,7 +92,7 @@ DATABASES = {
 
         'USER': 'postgres',
 
-        'PASSWORD': '135790',
+        'PASSWORD': 'psql789',
 
         'HOST': 'localhost',
 
@@ -144,3 +144,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+MEDIA_URL = '/images/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
