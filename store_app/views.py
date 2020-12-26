@@ -26,6 +26,6 @@ def checkout(request):
     else:
         items = []
         order = {'get_cart_total':0,'get_cart_items':0}
-        
+
     context = {'items':items,'order':order}
     return render(request, 'store_app/checkout.html', context=context)
