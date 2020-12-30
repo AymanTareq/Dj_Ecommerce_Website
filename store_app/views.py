@@ -1,7 +1,9 @@
 import json
 from django.shortcuts import render
 from django.http import JsonResponse
+import datetime
 from .models import *
+
 
 def store(request):
     products = Product.objects.all()
@@ -28,7 +30,7 @@ def cart(request):
     else:
         items = []
         order = {'get_cart_total':0,'get_cart_items':0,'shipping':False}
-        cartItems = order['cartItems']
+        cartItems = 0
 
     context = {'items':items,'order':order,'cartItems':cartItems}
     return render(request, 'store_app/cart.html', context=context)
@@ -42,7 +44,7 @@ def checkout(request):
     else:
         items = []
         order = {'get_cart_total':0,'get_cart_items':0,'shipping':False}
-        cartItems = order['cartItems']
+        cartItems = 0
 
     context = {'items':items,'order':order,'cartItems':cartItems}
     return render(request, 'store_app/checkout.html', context=context)
@@ -72,3 +74,36 @@ def updateItem(request):
 
 
     return JsonResponse('Item was added tareq', safe=False)
+
+def placeOrder(request):
+    trxn_id = datetime.datetime.now().timestamp()
+    data = json.loads(request.body)
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        order, created = Order.objects.get_or_create(customer=customer,status=False)
+        total = float(data['form']['total'])
+        order.transaction_id = trxn_id
+
+        if total == order.get_cart_total:
+            order.status = True
+        order.save()
+
+        if order.is_shipping == True:
+            ShippingAddress.objects.create(
+                customer=customer,
+                order = order,
+                address = data['shipping']['address'],
+                city = data['shipping']['city'],
+                state = data['shipping']['state'],
+                zipcode = data['shipping']['zipcode'],
+                country = data['shipping']['country'],
+            )
+
+
+
+    else:
+        print('User not logged in.')
+
+
+    print('Data:',request.body )
+    return JsonResponse('payment submitted', safe=False)

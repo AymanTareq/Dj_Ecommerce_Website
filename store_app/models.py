@@ -46,7 +46,7 @@ class Order(models.Model):
         return total
     
     @property
-    def shipping(self):
+    def is_shipping(self):
         shipping = False
         orderItems = self.orderitem_set.all()
         for item in orderItems:
@@ -79,6 +79,7 @@ class ShippingAddress(models.Model):
     city = models.CharField(max_length=25,null=False)
     state = models.CharField(max_length=25,null=False)
     zipcode = models.CharField(max_length=10,null=False)
+    country = models.CharField(max_length=25,null=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
