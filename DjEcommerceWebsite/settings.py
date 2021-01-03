@@ -85,19 +85,12 @@ WSGI_APPLICATION = 'DjEcommerceWebsite.wsgi.application'
 DATABASES = {
 
     'default': {
-
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-
         'NAME': 'dj_ecommerce_db',
-
         'USER': 'postgres',
-
         'PASSWORD': 'psql789',
-
         'HOST': 'localhost',
-
         'PORT': '5432',
-
     }
 
 }
